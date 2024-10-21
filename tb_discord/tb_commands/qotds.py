@@ -61,7 +61,11 @@ async def list_questions(inter: Interaction, branch: int):
     await inter.response.send_message(embed=embed)
 
 
-@bot.command()
+@tasks.loop(
+    time=datetime.datetime.strptime(configs.qotd_time, "%H:%M")
+    .replace(tzinfo=datetime.timezone.utc)
+    .time()
+)
 async def qotd(inter: Interaction):
     for branch, channel_id in enumerate(configs.qotd_channels):
         channel = bot.get_channel(channel_id)

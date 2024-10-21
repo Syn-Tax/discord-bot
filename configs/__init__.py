@@ -48,6 +48,7 @@ class _ConfigReader:
         self.instructor_roles: list = cfg["INSTRUCTOR_ROLES"]
         self.qotd_channels: list = cfg["QOTD_CHANNELS"]
         self.qotd_roles: list = cfg["QOTD_ROLES"]
+        self.qotd_time: str = cfg["QOTD_TIME"]
         self.TOKEN: str = getenv("TOKEN")
         self.DBINFO: dict[str:str] = {
             "host": getenv("DBIP"),
