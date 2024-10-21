@@ -1,4 +1,5 @@
 """Permission filters for Towerbot"""
+
 from discord import app_commands
 from discord import Interaction
 from configs import configs
@@ -20,8 +21,27 @@ def check_is_owner():
     """
 
     def predicate(interaction: Interaction):
-        if interaction.user.id not in configs.owner_ids:  # May not be coroutine-safe in the future, fine for now
+        if (
+            interaction.user.id not in configs.owner_ids
+        ):  # May not be coroutine-safe in the future, fine for now
             return False
         return True
+
+    return app_commands.check(predicate)
+
+
+def check_is_instructor():
+    """Checks if author of a message has an instructor role
+    Usage:
+        @bot.command()
+        @check_is_owner()
+        async def command(...):
+        Commands with this check should not appear to any non-admin
+    Returns:
+        True or False | If owner is or is not in config
+    """
+
+    def predicate(interaction: Interaction):
+        return any([r.id in configs.instructor_roles for r in interaction.user.roles])
 
     return app_commands.check(predicate)

@@ -71,7 +71,13 @@ if "-r" in argv:
 			"CREATE OR REPLACE TABLE server_data("
 				"id TINYINT UNSIGNED PRIMARY KEY,"
 				"data BLOB DEFAULT '');",
-			"INSERT INTO server_data VALUES (0, %s);"], [(), (), (), (), (int(0).to_bytes(2, "big") * 256)])
+    		"CREATE TABLE IF NOT EXISTS questions("
+      			"id INT UNSIGNED PRIMARY KEY AUTO INCREMENT,"
+         		"branch TINYINT UNSIGNED NOT NULL,"
+           		"question VARCHAR(255),"
+             	"answer VARCHAR(255),"
+              	"times INT DEFAULT 0);",
+			"INSERT INTO server_data VALUES (0, %s);"], [(), (), (), (), (), (int(0).to_bytes(2, "big") * 256)])
 	print(*sql_op(["SELECT * FROM user_comms;", "SELECT * FROM persistent_messages;", "SELECT * FROM students",
 				  "SELECT * FROM server_data"], [(), (), (), ()], fetch_all=True), sep="\n")
 else:
@@ -90,5 +96,10 @@ else:
 				"completed_sessions BLOB DEFAULT '');",
 			"CREATE TABLE IF NOT EXISTS server_data("
 				"id TINYINT UNSIGNED PRIMARY KEY,"
-				"data BLOB DEFAULT '');"], [(), (), (), ()])
-
+				"data BLOB);",
+    		"CREATE TABLE IF NOT EXISTS questions("
+      			"id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,"
+         		"branch TINYINT UNSIGNED NOT NULL,"
+           		"question VARCHAR(255),"
+             	"answer VARCHAR(255),"
+              	"times INT DEFAULT 0);"], [(), (), (), (), ()])
